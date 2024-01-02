@@ -33,7 +33,3 @@ A documentação completa das API's está disponível no endpoint `/api-docs`. A
 ---
 
 Desenvolvido com ❤️ por Samuel Baldasso
-
-PS: Se preferir, o projeto estará também em ambiente de produção no link abaixo:
-
-https://vitrine-carros-backend.up.railway.app/
