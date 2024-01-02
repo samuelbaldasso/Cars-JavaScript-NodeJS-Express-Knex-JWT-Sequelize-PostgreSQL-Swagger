@@ -1,5 +1,8 @@
 const { Sequelize, Model, DataTypes } = require('sequelize');
-const sequelize = new Sequelize('postgresql://postgres:EBbeGAdF*34bbDD3DfaE11bfDfB-6g5-@monorail.proxy.rlwy.net:21017/railway');
+const sequelize = new Sequelize("postgres://postgres:admin@localhost:5432/vitrine_carros", {
+  dialect: 'postgres'
+});
+
 const bcrypt = require('bcryptjs');
 
 class User extends Model {}
@@ -26,7 +29,6 @@ User.init({
         allowNull: false,
         validate: {
             notEmpty: true,
-            len: [4, 50]
         }
     },
     imagem_url: DataTypes.STRING,

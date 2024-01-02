@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await Admin.findAll({
-            attributes: ['id', 'nome', 'email', 'imagem_url'] // evite retornar a senha
+            attributes: ['id', 'nome', 'email', 'senha', 'imagem_url'] // evite retornar a senha
         });
         res.status(200).json(users);
     } catch (error) {
@@ -16,7 +16,7 @@ exports.getAllUsers = async (req, res) => {
 exports.getUser = async (req, res) => {
     try {
         const user = await Admin.findByPk(req.params.id, {
-            attributes: ['id', 'nome', 'email', 'imagem_url'] // evite retornar a senha
+            attributes: ['id', 'nome', 'email', 'senha', 'imagem_url'] // evite retornar a senha
         });
 
         if (!user) {
@@ -39,17 +39,19 @@ exports.putUser = async (req, res) => {
             return res.status(404).json({ error: 'Usuário não encontrado.' });
         }
 
-        if (senha && senha.length >= 4 && senha.length <= 50) {
-            const salt = await bcrypt.genSalt(10);
-            user.senha = await bcrypt.hash(senha, salt);
-        } else if (senha) {
-            return res.status(400).json({ error: 'Senha deve ter entre 4 e 50 caracteres.' });
+        if (senha) {
+            if (senha && senha.length >= 4 && senha.length <= 50) {
+                const salt = await bcrypt.genSalt(10);
+                const hashedPassword = await bcrypt.hash(senha, salt);
+                user.senha = hashedPassword;
+            } else {
+                return res.status(400).json({ error: 'Senha deve ter entre 4 e 50 caracteres.' });
+            }
         }
-
-        user.nome = nome || user.nome;
-        user.email = email || user.email;
-        user.imagem_url = imagem_url || user.imagem_url;
-        user.senha = senha || user.senha
+        
+        if (nome) user.nome = nome;
+        if (email) user.email = email;
+        if (imagem_url) user.imagem_url = imagem_url;
 
         await user.save();
 

@@ -1,5 +1,7 @@
 const { Sequelize, Model, DataTypes } = require('sequelize');
-const sequelize = new Sequelize('postgresql://postgres:EBbeGAdF*34bbDD3DfaE11bfDfB-6g5-@monorail.proxy.rlwy.net:21017/railway');
+const sequelize = new Sequelize("postgres://postgres:admin@localhost:5432/vitrine_carros", {
+  dialect: 'postgres'
+});
 
 class Carro extends Model {}
 
